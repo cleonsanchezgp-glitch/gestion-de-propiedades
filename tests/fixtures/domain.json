@@ -1,0 +1,14 @@
+{
+  "edificios": [{ "id": "test-edif-001", "nombre": "Edificio sintético" }],
+  "propiedades": [{ "id": "test-prop-001", "nombre": "Vivienda sintética", "edificioId": "test-edif-001", "ocupada": true }],
+  "inquilinos": [{ "id": "test-inq-001", "nombre": "Persona de prueba", "propiedadId": "test-prop-001", "renta": "450.00", "activo": true }],
+  "pagos": [
+    { "id": "test-pago-001", "inquilinoId": "test-inq-001", "mes": "2026-01", "estado": "pagado", "importeAbonado": "450.00" },
+    { "id": "test-pago-002", "inquilinoId": "test-inq-001", "mes": "2026-02", "estado": "parcial", "importeAbonado": null },
+    { "id": "test-pago-003", "inquilinoId": "test-inq-001", "mes": "2026-03", "estado": "pendiente", "importeAbonado": null }
+  ],
+  "incidencias": [],
+  "documentos": [],
+  "recibos": {},
+  "deleted": {}
+}

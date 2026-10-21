@@ -1,0 +1,8 @@
+[
+  {"file":"postgresql.zip","version":"16.15-1","url":"https://get.enterprisedb.com/postgresql/postgresql-16.15-1-windows-x64-binaries.zip"},
+  {"file":"keycloak.zip","version":"26.7.4","url":"https://github.com/keycloak/keycloak/releases/download/26.7.4/keycloak-26.7.4.zip"},
+  {"file":"java.zip","version":"21.0.12.1+1","url":"https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.12.1%2B1/OpenJDK21U-jre_x64_windows_hotspot_21.0.12.1_1.zip","sha256":"d35f31e712f0fcf6ac5a093edc90204fbff22f720ba3950bd09d331d5e621636"},
+  {"file":"winsw.exe","version":"2.12.0","url":"https://github.com/winsw/winsw/releases/download/v2.12.0/WinSW-x64.exe"},
+  {"file":"cloudflared.exe","version":"2026.10.0","url":"https://github.com/cloudflare/cloudflared/releases/download/2026.10.0/cloudflared-windows-amd64.exe","sha256":"86aee4017b26625cee8484c113558f48effa4cd47f7aa05fcf425604e5d2b23c"},
+  {"file":"vc_redist.x64.exe","version":"Microsoft VC++ 2015-2022 x64","url":"https://aka.ms/vs/17/release/vc_redist.x64.exe"}
+]

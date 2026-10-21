@@ -1,0 +1,19 @@
+{
+  "name": "aelium-propiedades-frontend",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test:browser": "playwright test",
+    "browser:install": "playwright install chromium",
+    "test:update": "node ../tests/scripts/check-update-frontend.mjs"
+  },
+  "dependencies": {
+    "vite": "8.3.4"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.0"
+  }
+}

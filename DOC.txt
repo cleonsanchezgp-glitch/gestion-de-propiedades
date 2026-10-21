@@ -1,0 +1,644 @@
+{
+  "propiedades": [
+    {
+      "id": "1790277846700apuf",
+      "nombre": "Pilar Lorengar 31 3A",
+      "referencia": "",
+      "direccion": "31",
+      "superficie": "42",
+      "habitaciones": "2",
+      "ocupada": true,
+      "anyo": "1989",
+      "notas": "",
+      "_ts": 1790718035052
+    },
+    {
+      "id": "1790279692695jtyt",
+      "nombre": "Pilar Lorengar 31 3B",
+      "referencia": "",
+      "direccion": "31",
+      "superficie": "42",
+      "habitaciones": "2",
+      "ocupada": true,
+      "anyo": "1989",
+      "notas": "",
+      "_ts": 1790718342080
+    },
+    {
+      "id": "mun76c7mfq7",
+      "nombre": "Pilar Lorengar 31 Bajo A",
+      "referencia": "",
+      "direccion": "31",
+      "superficie": "38",
+      "habitaciones": "1",
+      "ocupada": true,
+      "anyo": "1989",
+      "notas": "",
+      "_ts": 1790718003186
+    },
+    {
+      "id": "mun7941r9ia",
+      "nombre": "Pilar Lorengar 31 Bajo B",
+      "referencia": "",
+      "direccion": "31",
+      "superficie": "38",
+      "habitaciones": "1",
+      "ocupada": true,
+      "anyo": "1989",
+      "notas": "",
+      "_ts": 1790718042368
+    },
+    {
+      "id": "mun7dqpql1g",
+      "nombre": "Pilar Lorengar 31 2A",
+      "referencia": "",
+      "direccion": "31",
+      "superficie": "42",
+      "habitaciones": "2",
+      "ocupada": true,
+      "anyo": "1989",
+      "notas": "",
+      "_ts": 1790718200702
+    },
+    {
+      "id": "mun7gg2jdet",
+      "nombre": "Pilar Lorengar 31 2B",
+      "referencia": "",
+      "direccion": "31",
+      "superficie": "42",
+      "habitaciones": "2",
+      "ocupada": true,
+      "anyo": "1989",
+      "notas": "",
+      "_ts": 1790718629988
+    },
+    {
+      "id": "mun7kvyk25m",
+      "nombre": "Pilar Lorengar 31 1A",
+      "referencia": "",
+      "direccion": "31",
+      "superficie": "42",
+      "habitaciones": "2",
+      "ocupada": true,
+      "anyo": "1989",
+      "notas": "",
+      "_ts": 1790718534092
+    },
+    {
+      "id": "mun7mrwxp6n",
+      "nombre": "Pilar Lorengar 31 1B",
+      "referencia": "",
+      "direccion": "31",
+      "superficie": "46",
+      "habitaciones": "2",
+      "ocupada": true,
+      "anyo": "1989",
+      "notas": "",
+      "_ts": 1790718622161
+    }
+  ],
+  "inquilinos": [
+    {
+      "id": "muiaeb960u5",
+      "nombre": "HAKIMA SALLOUK",
+      "dni": "",
+      "telefono": "",
+      "email": "",
+      "renta": 360,
+      "fianza": 0,
+      "inicio": "",
+      "fin": "",
+      "propiedadId": "1790277846700apuf",
+      "activo": true,
+      "notas": "",
+      "_ts": 1790717782840
+    },
+    {
+      "id": "muiamhdda7o",
+      "nombre": "MARIA DILCIA REYES",
+      "dni": "",
+      "telefono": "",
+      "email": "",
+      "renta": 350,
+      "fianza": 0,
+      "inicio": "",
+      "fin": "",
+      "propiedadId": "mun76c7mfq7",
+      "activo": true,
+      "notas": "",
+      "_ts": 1790717934551
+    },
+    {
+      "id": "muianmdk467",
+      "nombre": "LYZAN MAGDALENA",
+      "dni": "",
+      "telefono": "",
+      "email": "",
+      "renta": 301,
+      "fianza": 602,
+      "inicio": "2029-08-25",
+      "fin": "2029-08-25",
+      "propiedadId": "mun7941r9ia",
+      "activo": true,
+      "notas": "",
+      "_ts": 1790881287509
+    },
+    {
+      "id": "muiap0abncy",
+      "nombre": "CRISTIAN FERNANDO ARANDA",
+      "dni": "",
+      "telefono": "",
+      "email": "",
+      "renta": 580,
+      "fianza": 0,
+      "inicio": "",
+      "fin": "",
+      "propiedadId": "mun7mrwxp6n",
+      "activo": true,
+      "notas": "",
+      "_ts": 1790718645003
+    },
+    {
+      "id": "muiapsxmbmi",
+      "nombre": "BELEN CONEJERO",
+      "dni": "",
+      "telefono": "+34 659 09 09 56",
+      "email": "",
+      "renta": 1,
+      "fianza": 0,
+      "inicio": "",
+      "fin": "",
+      "propiedadId": "mun7kvyk25m",
+      "activo": true,
+      "notas": "",
+      "_ts": 1790718743652
+    },
+    {
+      "id": "muiaq5mzzgl",
+      "nombre": "ALEJANDRO ALONSO",
+      "dni": "",
+      "telefono": "",
+      "email": "",
+      "renta": 1,
+      "fianza": 0,
+      "inicio": "",
+      "fin": "",
+      "propiedadId": "mun7dqpql1g",
+      "activo": true,
+      "notas": "",
+      "_ts": 1790718570743
+    },
+    {
+      "id": "muiar1gsci7",
+      "nombre": "EVA MARIA NAVARRETE",
+      "dni": "",
+      "telefono": "",
+      "email": "",
+      "renta": 360,
+      "fianza": 0,
+      "inicio": "2027-07-24",
+      "fin": "2027-07-24",
+      "propiedadId": "mun7gg2jdet",
+      "activo": true,
+      "notas": "",
+      "_ts": 1790881313205
+    },
+    {
+      "id": "mun735jjqa2",
+      "nombre": "AYME ORTIZ",
+      "dni": "",
+      "telefono": "",
+      "email": "",
+      "renta": 600,
+      "fianza": 1200,
+      "inicio": "2026-10-02",
+      "fin": "",
+      "propiedadId": "1790279692695jtyt",
+      "activo": true,
+      "notas": "",
+      "_ts": 1790881326141
+    }
+  ],
+  "pagos": [
+    {
+      "id": "1790279746624bswu",
+      "inquilinoId": "1790279738147usvm",
+      "mes": "2026-09",
+      "estado": "pagado",
+      "fecha": "24/9/2026",
+      "nota": ""
+    },
+    {
+      "id": "1790282369295qw78",
+      "inquilinoId": "1790279738147usvm",
+      "mes": "2026-08",
+      "estado": "parcial",
+      "fecha": "24/9/2026",
+      "nota": ""
+    },
+    {
+      "id": "1790282383211w72d",
+      "inquilinoId": "1790279738147usvm",
+      "mes": "2026-07",
+      "estado": "parcial",
+      "fecha": "24/9/2026",
+      "nota": ""
+    },
+    {
+      "id": "muhnhp5l9ik",
+      "inquilinoId": "muhnbl21k1u",
+      "mes": "2026-07",
+      "estado": "pagado",
+      "fecha": "26/9/2026",
+      "nota": "",
+      "_ts": 1790382462106
+    },
+    {
+      "id": "muiaeijn1jy",
+      "inquilinoId": "muiaeb960u5",
+      "mes": "2026-09",
+      "estado": "pagado",
+      "fecha": "26/9/2026",
+      "nota": "",
+      "_ts": 1790420944739
+    },
+    {
+      "id": "muiamo6liia",
+      "inquilinoId": "muiamhdda7o",
+      "mes": "2026-09",
+      "estado": "pagado",
+      "fecha": "26/9/2026",
+      "nota": "",
+      "_ts": 1790421325293
+    },
+    {
+      "id": "muiano8ssae",
+      "inquilinoId": "muianmdk467",
+      "mes": "2026-09",
+      "estado": "pagado",
+      "fecha": "26/9/2026",
+      "nota": "",
+      "_ts": 1790421372028
+    },
+    {
+      "id": "muiap20f40s",
+      "inquilinoId": "muiap0abncy",
+      "mes": "2026-09",
+      "estado": "pendiente",
+      "fecha": "26/9/2026",
+      "nota": "",
+      "_ts": 1790421698598
+    },
+    {
+      "id": "muiapvo0eu9",
+      "inquilinoId": "muiapsxmbmi",
+      "mes": "2026-09",
+      "estado": "pagado",
+      "fecha": "26/9/2026",
+      "nota": "",
+      "_ts": 1790421474960
+    },
+    {
+      "id": "muiaq6z6h04",
+      "inquilinoId": "muiaq5mzzgl",
+      "mes": "2026-09",
+      "estado": "pagado",
+      "fecha": "26/9/2026",
+      "nota": "",
+      "_ts": 1790421489618
+    },
+    {
+      "id": "muiar3xfrww",
+      "inquilinoId": "muiar1gsci7",
+      "mes": "2026-09",
+      "estado": "pagado",
+      "fecha": "26/9/2026",
+      "nota": "",
+      "_ts": 1790421532323
+    },
+    {
+      "id": "muias83b2cu",
+      "inquilinoId": "muiaeb960u5",
+      "mes": "2026-08",
+      "estado": "pagado",
+      "fecha": "26/9/2026",
+      "nota": "",
+      "_ts": 1790421651942
+    },
+    {
+      "id": "muiasf3jxk5",
+      "inquilinoId": "muiamhdda7o",
+      "mes": "2026-08",
+      "estado": "pagado",
+      "fecha": "26/9/2026",
+      "nota": "",
+      "_ts": 1790421662681
+    },
+    {
+      "id": "muiask6h2ha",
+      "inquilinoId": "muianmdk467",
+      "mes": "2026-08",
+      "estado": "pagado",
+      "fecha": "26/9/2026",
+      "nota": "",
+      "_ts": 1790421668580
+    },
+    {
+      "id": "muiasovzcmh",
+      "inquilinoId": "muiar1gsci7",
+      "mes": "2026-08",
+      "estado": "pagado",
+      "fecha": "26/9/2026",
+      "nota": "",
+      "_ts": 1790421674909
+    },
+    {
+      "id": "muiasu3u42u",
+      "inquilinoId": "muiap0abncy",
+      "mes": "2026-08",
+      "estado": "pagado",
+      "fecha": "26/9/2026",
+      "nota": "",
+      "_ts": 1790421692086
+    },
+    {
+      "id": "muiatal8ddv",
+      "inquilinoId": "muiapsxmbmi",
+      "mes": "2026-08",
+      "estado": "pagado",
+      "fecha": "26/9/2026",
+      "nota": "",
+      "_ts": 1790421653661
+    },
+    {
+      "id": "muiatatcrw5",
+      "inquilinoId": "muiaq5mzzgl",
+      "mes": "2026-08",
+      "estado": "pagado",
+      "fecha": "26/9/2026",
+      "nota": "",
+      "_ts": 1790421654769
+    },
+    {
+      "id": "muiavh8y6kg",
+      "inquilinoId": "muiap0abncy",
+      "mes": "2026-06",
+      "estado": "pagado",
+      "fecha": "26/9/2026",
+      "nota": "",
+      "_ts": 1790880630823
+    },
+    {
+      "id": "muiavxrri77",
+      "inquilinoId": "muiamhdda7o",
+      "mes": "2026-07",
+      "estado": "pagado",
+      "fecha": "26/9/2026",
+      "nota": "",
+      "_ts": 1790421757623
+    },
+    {
+      "id": "muiawjqwock",
+      "inquilinoId": "muiar1gsci7",
+      "mes": "2026-07",
+      "estado": "pagado",
+      "fecha": "26/9/2026",
+      "nota": "",
+      "_ts": 1790421786104
+    },
+    {
+      "id": "muiawurqcl1",
+      "inquilinoId": "muianmdk467",
+      "mes": "2026-07",
+      "estado": "pagado",
+      "fecha": "26/9/2026",
+      "nota": "",
+      "_ts": 1790421800390
+    },
+    {
+      "id": "muiax3e3wbw",
+      "inquilinoId": "muiap0abncy",
+      "mes": "2026-07",
+      "estado": "pagado",
+      "fecha": "26/9/2026",
+      "nota": "",
+      "_ts": 1790421811563
+    },
+    {
+      "id": "muiaxcmx1ic",
+      "inquilinoId": "muiapsxmbmi",
+      "mes": "2026-07",
+      "estado": "pagado",
+      "fecha": "26/9/2026",
+      "nota": "",
+      "_ts": 1790421823545
+    },
+    {
+      "id": "muiaxcvd763",
+      "inquilinoId": "muiaq5mzzgl",
+      "mes": "2026-07",
+      "estado": "pagado",
+      "fecha": "26/9/2026",
+      "nota": "",
+      "_ts": 1790421823849
+    },
+    {
+      "id": "mupw33kt7oy",
+      "inquilinoId": "mun735jjqa2",
+      "mes": "2026-05",
+      "estado": "pagado",
+      "fecha": "1/10/2026",
+      "nota": "",
+      "_ts": 1790880626909
+    },
+    {
+      "id": "mupw33r2uur",
+      "inquilinoId": "muiar1gsci7",
+      "mes": "2026-05",
+      "estado": "pagado",
+      "fecha": "1/10/2026",
+      "nota": "",
+      "_ts": 1790880627134
+    },
+    {
+      "id": "mupw33z60wq",
+      "inquilinoId": "muiaq5mzzgl",
+      "mes": "2026-05",
+      "estado": "pagado",
+      "fecha": "1/10/2026",
+      "nota": "",
+      "_ts": 1790880627426
+    },
+    {
+      "id": "mupw346uwav",
+      "inquilinoId": "muiapsxmbmi",
+      "mes": "2026-05",
+      "estado": "pagado",
+      "fecha": "1/10/2026",
+      "nota": "",
+      "_ts": 1790880627702
+    },
+    {
+      "id": "mupw34fl4dv",
+      "inquilinoId": "muiap0abncy",
+      "mes": "2026-05",
+      "estado": "pagado",
+      "fecha": "1/10/2026",
+      "nota": "",
+      "_ts": 1790880628018
+    },
+    {
+      "id": "mupw34nucs7",
+      "inquilinoId": "muianmdk467",
+      "mes": "2026-05",
+      "estado": "pagado",
+      "fecha": "1/10/2026",
+      "nota": "",
+      "_ts": 1790880628314
+    },
+    {
+      "id": "mupw34v8dpn",
+      "inquilinoId": "muiamhdda7o",
+      "mes": "2026-05",
+      "estado": "pagado",
+      "fecha": "1/10/2026",
+      "nota": "",
+      "_ts": 1790880628580
+    },
+    {
+      "id": "mupw352bp8e",
+      "inquilinoId": "muiaeb960u5",
+      "mes": "2026-05",
+      "estado": "pagado",
+      "fecha": "1/10/2026",
+      "nota": "",
+      "_ts": 1790880628835
+    },
+    {
+      "id": "mupw35psf0e",
+      "inquilinoId": "mun735jjqa2",
+      "mes": "2026-06",
+      "estado": "pagado",
+      "fecha": "1/10/2026",
+      "nota": "",
+      "_ts": 1790880629680
+    },
+    {
+      "id": "mupw35wqojp",
+      "inquilinoId": "muiar1gsci7",
+      "mes": "2026-06",
+      "estado": "pagado",
+      "fecha": "1/10/2026",
+      "nota": "",
+      "_ts": 1790880629930
+    },
+    {
+      "id": "mupw364b4vs",
+      "inquilinoId": "muiaq5mzzgl",
+      "mes": "2026-06",
+      "estado": "pagado",
+      "fecha": "1/10/2026",
+      "nota": "",
+      "_ts": 1790880630203
+    },
+    {
+      "id": "mupw36d9xse",
+      "inquilinoId": "muiapsxmbmi",
+      "mes": "2026-06",
+      "estado": "pagado",
+      "fecha": "1/10/2026",
+      "nota": "",
+      "_ts": 1790880630525
+    },
+    {
+      "id": "mupw36syys2",
+      "inquilinoId": "muianmdk467",
+      "mes": "2026-06",
+      "estado": "pagado",
+      "fecha": "1/10/2026",
+      "nota": "",
+      "_ts": 1790880631090
+    },
+    {
+      "id": "mupw370557z",
+      "inquilinoId": "muiamhdda7o",
+      "mes": "2026-06",
+      "estado": "pagado",
+      "fecha": "1/10/2026",
+      "nota": "",
+      "_ts": 1790880631349
+    },
+    {
+      "id": "mupw378xvt6",
+      "inquilinoId": "muiaeb960u5",
+      "mes": "2026-06",
+      "estado": "pagado",
+      "fecha": "1/10/2026",
+      "nota": "",
+      "_ts": 1790880631665
+    },
+    {
+      "id": "mupvecl2i98",
+      "inquilinoId": "muianmdk467",
+      "mes": "2026-10",
+      "estado": "pendiente",
+      "fecha": "1/10/2026",
+      "nota": "",
+      "_ts": 1790879475888
+    }
+  ],
+  "incidencias": [
+    {
+      "id": "1790279381098lg76",
+      "titulo": "Trastos en terraza y en el rellano",
+      "propiedadId": "1790277846700apuf",
+      "prioridad": "media",
+      "estado": "en_curso",
+      "descripcion": "Notificar a la inquilina en un plazo de una semana sobre el estado correspondiente de la terraza y del rellano, de esta manera dispondrá de una semana para quitar todo del rellano y parte de los trastos de la terraza por un peligro existente de sobrepeso sobre la terraza.",
+      "fecha": "24/9/2026"
+    },
+    {
+      "id": "179027945013149ol",
+      "titulo": "Fachada y Puerta",
+      "propiedadId": "1790277846700apuf",
+      "prioridad": "media",
+      "estado": "abierta",
+      "descripcion": "Se debería de realizar reformas de la fachada como pintarla y arreglar los diferentes agujeros, de esta manera aprovechar y cambiar la puerta.",
+      "fecha": "24/9/2026"
+    },
+    {
+      "id": "1790279499571s596",
+      "titulo": "Arreglar los buzones",
+      "propiedadId": "1790277846700apuf",
+      "prioridad": "media",
+      "estado": "abierta",
+      "descripcion": "Se deberían de revisar el estado de los buzones y notificar de su correcto uso para evitar deterioros futuros.",
+      "fecha": "24/9/2026"
+    },
+    {
+      "id": "1790279597141avbo",
+      "titulo": "Comprar cubo de basura",
+      "propiedadId": "1790277846700apuf",
+      "prioridad": "alta",
+      "estado": "en_curso",
+      "descripcion": "Se debería de comprar un cubo de basura para los inquilinos del edificio y asegurarse y avisar de que no falte",
+      "fecha": "24/9/2026"
+    }
+  ],
+  "documentos": [],
+  "recibos": {},
+  "deleted": {
+    "propiedades": {
+      "1790279668645jkjq": 1790413965857
+    },
+    "inquilinos": {
+      "muhnbl21k1u": 1790383033437
+    },
+    "pagos": {},
+    "incidencias": {},
+    "documentos": {
+      "muiog4jq305": 1790444554398
+    }
+  },
+  "_ts": 1790881373528
+}

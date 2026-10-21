@@ -1,0 +1,330 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Aelium application-update format 2",
+  "description": "Package.ps1 additionally enforces Windows path safety, exact inventories, history transitions and recovery coverage.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "kind",
+    "product",
+    "platform",
+    "releaseId",
+    "buildId",
+    "acceptedSources",
+    "files",
+    "dependencies",
+    "schemaBefore",
+    "schemaAfter",
+    "migrations",
+    "apiContract",
+    "supportedFrontends",
+    "recovery"
+  ],
+  "properties": {
+    "format": {
+      "const": 2
+    },
+    "kind": {
+      "const": "application-update"
+    },
+    "product": {
+      "const": "aelium-propiedades"
+    },
+    "platform": {
+      "const": "windows-x64"
+    },
+    "releaseId": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]{0,79}$"
+    },
+    "buildId": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]{0,79}$"
+    },
+    "acceptedSources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "sourceId",
+          "evidence"
+        ],
+        "properties": {
+          "sourceId": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]{0,79}$"
+          },
+          "evidence": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]{0,79}$"
+          }
+        }
+      }
+    },
+    "files": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "path",
+          "target",
+          "size",
+          "sha256"
+        ],
+        "properties": {
+          "path": {
+            "enum": [
+              "bin/propiedades-backend.exe",
+              "scripts/run-api.ps1",
+              "scripts/application.ps1",
+              "docs/LEEME.md"
+            ]
+          },
+          "target": {
+            "enum": [
+              "release",
+              "stable"
+            ]
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 536870912
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        }
+      }
+    },
+    "dependencies": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "version",
+          "files"
+        ],
+        "properties": {
+          "id": {
+            "enum": [
+              "postgresql",
+              "keycloak",
+              "java",
+              "winsw",
+              "cloudflared",
+              "vc-runtime"
+            ]
+          },
+          "version": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "files": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "path",
+                "sha256"
+              ],
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "maxLength": 200,
+                  "pattern": "^([a-zA-Z0-9_./-]+|postgresql/share/timezone/(Etc/)?GMT\\+(0|[1-9]|1[0-4]))$",
+                  "description": "Package.ps1 enforces Windows path segments and permits the exact GMT+N exception only for the postgresql dependency; payload paths remain unchanged."
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "schemaBefore": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "version",
+          "checksum"
+        ],
+        "properties": {
+          "version": {
+            "type": "string",
+            "pattern": "^[1-9][0-9]{0,17}$"
+          },
+          "checksum": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{96}$"
+          }
+        }
+      }
+    },
+    "schemaAfter": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "version",
+          "checksum"
+        ],
+        "properties": {
+          "version": {
+            "type": "string",
+            "pattern": "^[1-9][0-9]{0,17}$"
+          },
+          "checksum": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{96}$"
+          }
+        }
+      }
+    },
+    "migrations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "version",
+          "checksum"
+        ],
+        "properties": {
+          "version": {
+            "type": "string",
+            "pattern": "^[1-9][0-9]{0,17}$"
+          },
+          "checksum": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{96}$"
+          }
+        }
+      }
+    },
+    "apiContract": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]{0,79}$"
+    },
+    "supportedFrontends": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "apiContract",
+          "evidence"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]{0,79}$"
+          },
+          "apiContract": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]{0,79}$"
+          },
+          "evidence": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]{0,79}$"
+          }
+        }
+      }
+    },
+    "recovery": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sourceIds",
+        "schema",
+        "checks",
+        "preserve"
+      ],
+      "properties": {
+        "sourceIds": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]{0,79}$"
+          },
+          "uniqueItems": true
+        },
+        "schema": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "version",
+              "checksum"
+            ],
+            "properties": {
+              "version": {
+                "type": "string",
+                "pattern": "^[1-9][0-9]{0,17}$"
+              },
+              "checksum": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{96}$"
+              }
+            }
+          }
+        },
+        "checks": {
+          "type": "array",
+          "minItems": 6,
+          "maxItems": 6,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "version",
+              "identity",
+              "read",
+              "write",
+              "frontend",
+              "cleanup"
+            ]
+          }
+        },
+        "preserve": {
+          "type": "array",
+          "minItems": 7,
+          "maxItems": 7,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "application",
+              "schema",
+              "data",
+              "identity",
+              "config",
+              "attachments",
+              "services"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

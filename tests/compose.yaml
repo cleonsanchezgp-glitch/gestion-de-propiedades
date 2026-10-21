@@ -1,0 +1,30 @@
+name: aelium-propiedades-tests
+services:
+  postgres:
+    image: postgres:16.13-alpine
+    environment:
+      POSTGRES_DB: propiedades_tests
+      POSTGRES_USER: propiedades_test
+      POSTGRES_PASSWORD: ${TEST_DB_PASSWORD:?Run npm run test:prepare}
+    ports:
+      - "127.0.0.1:55432:5432"
+    tmpfs:
+      - /var/lib/postgresql/data
+    volumes:
+      - ./postgres/fixtures.sql:/docker-entrypoint-initdb.d/01-fixtures.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U propiedades_test -d propiedades_tests"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.7.4
+    command: ["start-dev", "--import-realm"]
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: test_admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${TEST_ADMIN_PASSWORD:?Run npm run test:prepare}
+      KC_HOSTNAME: http://127.0.0.1:58081
+    ports:
+      - "127.0.0.1:58081:8080"
+    volumes:
+      - ./.runtime/realm:/opt/keycloak/data/import:ro

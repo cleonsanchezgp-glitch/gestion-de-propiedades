@@ -1,0 +1,16 @@
+{
+  "id": "/",
+  "name": "Promalza · Gestión de propiedades",
+  "short_name": "Promalza",
+  "description": "Gestión privada de propiedades, inquilinos y pagos.",
+  "lang": "es",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#30425b",
+  "theme_color": "#30425b",
+  "icons": [
+    { "src": "/images/promalza-icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/images/promalza-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

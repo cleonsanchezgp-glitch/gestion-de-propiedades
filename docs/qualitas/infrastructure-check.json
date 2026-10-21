@@ -1,0 +1,30 @@
+{
+  "scope": "Infrastructure only; no application verification",
+  "generatedAt": "2026-10-03T15:06:17.840Z",
+  "checks": [
+    {
+      "name": "Keycloak discovery and realm",
+      "status": "PASS"
+    },
+    {
+      "name": "Keycloak issues signed service token for isolated probe",
+      "status": "PASS"
+    },
+    {
+      "name": "Keycloak rejects wrong client secret",
+      "status": "PASS"
+    },
+    {
+      "name": "PostgreSQL synthetic fixtures and unknown partial amount",
+      "status": "PASS"
+    },
+    {
+      "name": "PostgreSQL rejects missing tenant reference",
+      "status": "PASS"
+    },
+    {
+      "name": "PostgreSQL rejects duplicate tenant/month",
+      "status": "PASS"
+    }
+  ]
+}

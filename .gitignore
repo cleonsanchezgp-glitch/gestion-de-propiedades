@@ -1,0 +1,15 @@
+node_modules/
+target/
+tests/.runtime/
+tests/artifacts/
+.env
+.env.*
+!.env.example
+frontend/dist/
+frontend/test-results/
+frontend/playwright-report/
+.wrangler/
+.dev.vars
+.dev.vars.*
+deploy/artifacts/
+deploy/windows/.cache/

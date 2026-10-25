@@ -66,6 +66,8 @@ REQ-008 incorpora el mantenimiento de la entrega al cliente mediante actualizaci
 | REQ-007 | Una fase posterior debe identificar pagos mediante correos de Ibercaja y n8n, con reglas de asociación revisadas antes de su activación | Futura; detalles pendientes | OBJ-004 |
 | REQ-008 | Deben poder entregarse nuevas funciones y correcciones al programa del cliente sin reinstalar toda la plataforma, conservando datos, identidad y configuración; las actualizaciones deben comprobar versión y compatibilidad, disponer de copia previa y recuperación ante fallos y evitar incluir dependencias sin cambios en las entregas habituales | Mantenimiento de la entrega; alcance confirmado el 2026-10-11 | OBJ-005 |
 
+| REQ-009 | Una instalación Docker nueva en Windows debe ejecutar API, Keycloak y PostgreSQL en contenedores; al publicarse una nueva versión de API en GHCR, el servidor del cliente debe detectarla y aplicarla sin intervención del cliente, conservando datos, identidad y configuración y mostrando fallos de actualización | Nueva variante Docker; alcance confirmado el 2026-10-24 | OBJ-005 |
+
 ## 5. Business Constraints
 
 | ID | Constraint | Rationale |

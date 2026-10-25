@@ -13,3 +13,7 @@ frontend/playwright-report/
 .dev.vars.*
 deploy/artifacts/
 deploy/windows/.cache/
+deploy/tools/
+deploy/container/state/
+deploy/container/demo-backups/
+deploy/dev/.runtime/

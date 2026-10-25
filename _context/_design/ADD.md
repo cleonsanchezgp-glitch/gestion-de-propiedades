@@ -178,6 +178,7 @@ Las actualizaciones se ejecutan como mantenimiento local administrativo, no medi
 | ADR-014 | registro persistente de mantenimiento, exclusión de operaciones concurrentes, protección del arranque de servicios y migración explícita antes del arranque normal sin migraciones | Impide que un reinicio o una comprobación de vida habiliten escrituras sobre una aplicación o esquema parcialmente actualizado |
 | ADR-015 | copia coherente de negocio, identidad, configuración, adjuntos y componentes recuperables; restauración conjunta y verificada cuando cambia el esquema | Un ejecutable anterior no garantiza compatibilidad con datos migrados; el listado de un dump no demuestra su restaurabilidad |
 | ADR-016 | contratos compatibles durante publicación y recuperación frontend–backend, con comprobaciones autenticadas y datos sintéticos aislados antes de activar operación normal | El frontend se entrega por separado y pueden coexistir pestañas antiguas; un cambio local no equivale a una publicación o reversión del Worker |
+| ADR-017 | Para una instalación Docker nueva, publicar la API versionada en GHCR, ejecutar API, Keycloak y PostgreSQL en Compose y comprobar el canal desde una tarea de Windows; detener escritores, copiar ambas bases y migrar antes de activar una imagen nueva | Realiza la actualización sin intervención del cliente cuando Docker Desktop está activo, sin cambiar la instalación nativa; conserva imágenes y datos para recuperación |
 
 ADR-001 a ADR-004 recogen el encargo. La base técnica de ADR-005 a ADR-007 fue aceptada por el usuario el 2026-10-03. ADR-008 y las reglas de conservación histórica siguen pendientes. ADR-009 y ADR-010 desarrollan las decisiones de producto del 2026-10-09; su diseño técnico se documenta aquí sin declararlo implementado. El estado de borrador del documento completo no se cambia a Approved.
 
@@ -203,6 +204,7 @@ ADR-012 a ADR-016 desarrollan REQ-008 confirmado el 2026-10-11. Tienen implement
 | ADR-014 | REQ-008, FR-016, NFR-009 | Fases persistentes, arranque y control de escrituras; AC-022, AC-023 y AC-109; implementación local parcial, aceptación pendiente |
 | ADR-015 | REQ-008, FR-014, FR-016, NFR-007, NFR-009 | Copia, restauración y conservación; AC-017, AC-018, AC-021, AC-107 y AC-109; implementación local parcial, aceptación pendiente |
 | ADR-016 | REQ-008, FR-012, FR-015, NFR-010 | Publicación compatible y validación de resultado; AC-014, AC-019, AC-020 y AC-110; implementación local parcial, aceptación pendiente |
+| ADR-017 | REQ-009, FR-017 a FR-020 | Variante Docker nueva y actualización automática de API; AC-024 a AC-028; validación integrada pendiente |
 
 REQ-002 requiere cerrar reglas de conservación. REQ-003 confirma importes abonados y saldos; siguen abiertas renta histórica, pagos múltiples, sobrepagos y correcciones. REQ-007 queda diferido. Ningún requisito se declara implementado por existir en esta tabla.
 

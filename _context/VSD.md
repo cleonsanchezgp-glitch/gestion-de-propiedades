@@ -44,6 +44,8 @@ Mantenimiento de la entrega al cliente: incorporar nuevas funciones y correccion
 
 Fase posterior: identificación de pagos a partir de correos de Ibercaja mediante n8n. Se documenta como futura capacidad; no forma parte de la aceptación de la primera fase. No se incluyen órdenes bancarias ni transferencias.
 
+Para una instalación Docker nueva en Windows con Docker Desktop, el responsable solicita el 2026-10-24 publicar versiones de la API en GitHub Container Registry y aplicarlas automáticamente sin intervención del cliente. PostgreSQL y Keycloak también se ejecutarán en contenedores con datos persistentes. Esta variante no migra ni modifica la instalación nativa Windows existente; el frontend conserva su publicación independiente. La comprobación periódica requiere que Docker Desktop esté disponible en la sesión Windows.
+
 ## 6. Objectives
 
 Los objetivos y criterios siguientes son propuestas derivadas del encargo, pendientes de revisión del responsable del producto.

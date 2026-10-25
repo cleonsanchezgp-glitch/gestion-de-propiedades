@@ -1,7 +1,7 @@
 # API de Gestión de propiedades
 
 Servicio Rust independiente del frontend. Necesita PostgreSQL y un realm Keycloak.
-Al arrancar ejecuta las migraciones incluidas en `migrations/`.
+En contenedores, `--container-migrate` ejecuta las migraciones incluidas en `migrations/` y `--container-serve` arranca sin migrar. El [entorno de desarrollo Docker](../deploy/dev/README.md) coordina ambos pasos.
 
 Compilación sin frontend, desde esta carpeta:
 

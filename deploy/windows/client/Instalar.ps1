@@ -15,16 +15,35 @@ if ([Environment]::OSVersion.Version.Build -lt 19041) { throw 'Windows 10 versio
 $admin = (New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 if (-not $admin -and -not $SmokeTest) { throw 'Run Instalar.cmd as administrator (right click).' }
 Assert-Package $PSScriptRoot
+$rootExists=Test-Path -LiteralPath $root -PathType Container
+if ($Resume -and -not $rootExists) { throw 'No existe una instalacion interrumpida que se pueda reanudar.' }
+$initialInstall= -not $rootExists -or (-not $Resume -and @(Get-ChildItem -LiteralPath $root -Force).Count -eq 0)
 $ids = @('AeliumPostgres','AeliumKeycloak','AeliumAPI')
 if (-not $SmokeTest) {
+    if ($initialInstall) {
+        foreach ($id in @($ids + 'AeliumTunnel')) {
+            $orphan=Get-CimInstance Win32_Service -Filter ("Name='"+$id+"'")
+            if (-not $orphan) { continue }
+            $expected=[IO.Path]::GetFullPath((Join-Path $root ('services/'+$id+'.exe')))
+            $servicePath=$orphan.PathName.Trim()
+            if ($servicePath -match '^"([^"]+)"(?:\s|$)') { $servicePath=$Matches[1] }
+            if ($servicePath -ine $expected) { throw ('El servicio ' + $id + ' pertenece a otra ruta: ' + $orphan.PathName + '. No se retira automaticamente.') }
+            if ($orphan.State -ne 'Stopped') { Stop-Service -Name $id -ErrorAction Stop }
+            & sc.exe delete $id | Out-Null
+            if ($LASTEXITCODE -ne 0) { throw ('No se pudo retirar el servicio antiguo ' + $id) }
+            $deadline=[DateTime]::UtcNow.AddSeconds(30)
+            while ((Get-Service -Name $id -ErrorAction SilentlyContinue) -and [DateTime]::UtcNow -lt $deadline) { Start-Sleep -Milliseconds 500 }
+            if (Get-Service -Name $id -ErrorAction SilentlyContinue) { throw ('El servicio antiguo ' + $id + ' sigue pendiente de eliminacion. Reinicie Windows antes de instalar.') }
+        }
+    }
     foreach ($id in $ids) {
         $existing = Get-CimInstance Win32_Service -Filter ("Name='" + $id + "'")
-        if ($existing -and (-not $Resume -or $existing.PathName -notlike ('*' + (Join-Path $root ('services/' + $id + '.exe')) + '*'))) { throw ('Existing service conflict: ' + $id) }
+        if ($existing -and (-not $Resume -or $existing.PathName -notlike ('*' + (Join-Path $root ('services/' + $id + '.exe')) + '*'))) { throw ('Queda registrado el servicio ' + $id + ' (' + $existing.PathName + '). La instalacion limpia exige retirar primero los servicios de la instalacion anterior; no se borran automaticamente.') }
     }
 }
 $settingsPath = Join-Path $root 'config/settings.json'
-if (Test-Path -LiteralPath $root) {
-    if (-not $Resume -or -not (Test-Path -LiteralPath $settingsPath)) { throw 'Directory already exists. Choose an empty directory; do not delete databases. Use -Resume only for an interrupted installation.' }
+if (-not $initialInstall) {
+    if (-not $Resume -or -not (Test-Path -LiteralPath $settingsPath)) { throw 'La carpeta de instalacion ya existe. La instalacion limpia necesita una carpeta nueva y vacia. Use -Resume solo para reanudar una instalacion interrumpida.' }
     $s = Get-Content -Raw -Encoding UTF8 $settingsPath | ConvertFrom-Json
     if ($s.Complete) { throw 'Already installed. Use Administrar.ps1; reinstalling must not reset passwords or databases.' }
     if ($PortalOrigin -and $PortalOrigin -ne $s.PortalOrigin) { throw 'Resume must preserve the original portal origin.' }
@@ -46,7 +65,7 @@ if (Test-Path -LiteralPath $root) {
     foreach ($port in @($s.PgPort,$s.ApiPort,$s.KeycloakPort)) {
         if (Get-NetTCPConnection -State Listen -LocalPort $port -ErrorAction SilentlyContinue) { throw ('Port already in use: ' + $port) }
     }
-    New-Item -ItemType Directory -Path $root | Out-Null
+    New-Item -ItemType Directory -Force -Path $root | Out-Null
     # Locale independent SIDs. initdb's restricted token needs an explicit installer-user ACE.
     $sid = [Security.Principal.WindowsIdentity]::GetCurrent().User.Value
     & icacls.exe $root /inheritance:r /grant:r '*S-1-5-18:(OI)(CI)F' '*S-1-5-32-544:(OI)(CI)F' '*S-1-5-19:(OI)(CI)RX' (('*' + $sid) + ':(OI)(CI)F') | Out-Null

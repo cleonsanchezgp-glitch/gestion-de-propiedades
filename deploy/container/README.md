@@ -1,0 +1,22 @@
+# Instalación Docker nueva en Windows
+
+Esta variante instala la API, Keycloak y dos bases PostgreSQL aisladas en Docker Desktop. El frontend sigue publicándose como Cloudflare Worker. **No importa ni reemplaza** una instalación nativa Windows existente. Los datos permanecen en los volúmenes `propiedades-data` y `keycloak-data`; las actualizaciones habituales solo cambian la imagen de la API.
+
+## Preparación única
+
+1. Comprobar que el Windows de destino admite la versión actual de Docker Desktop, WSL 2, virtualización y el arranque requerido. Iniciar sesión con la cuenta de Windows que operará Docker Desktop y activar su arranque al iniciar sesión. La tarea automática funciona bajo esa misma cuenta y necesita que Docker Desktop esté disponible; no equivale a un servicio desatendido antes del inicio de sesión.
+2. Copiar `.env.example` a `.env`. Completar contraseñas aleatorias largas, orígenes HTTPS y `BACKUP_DIR` con una ruta absoluta privada compartida con Docker Desktop. Antes de configurar Keycloak, usar valores provisionales no vacíos para `KEYCLOAK_ALLOWED_SUBJECT` y `KEYCLOAK_LOGIN_CLIENT_SECRET`, y sustituirlos al terminar. No guardar `.env` ni las copias en Git. Las contraseñas usadas en `DATABASE_URL` deben ser seguras para una URL o codificarse para URL.
+3. Configurar los túneles HTTPS de API y Keycloak como en [la guía de despliegue](../README.md). Keycloak se expone solo en `127.0.0.1:58082`, la API en `127.0.0.1:58090`; PostgreSQL no publica puertos.
+4. Si la imagen de GHCR es privada, iniciar sesión una vez en GHCR desde **esa cuenta Windows** con un token de lectura de paquetes (`docker login ghcr.io`). Proteger y renovar ese token. Una imagen pública puede descargarse sin token.
+5. Desde PowerShell, en esta carpeta, ejecutar `./Actualizar.ps1 -Action Install`. El script descarga `stable`, inicia las bases y Keycloak, ejecuta las migraciones y arranca la API. Después configurar el realm `propiedades`, su usuario, el cliente confidencial `portal-login`, Audience y el identificador autorizado siguiendo [la guía de despliegue](../README.md). Completar `.env` con los valores reales y recrear API (`docker compose --env-file .env -f compose.yaml up -d --no-deps api`). Verificar login y lectura/escritura desde el portal antes de activar actualizaciones.
+6. Ejecutar `./Registrar-Tarea.ps1` bajo la cuenta que usa Docker Desktop. La tarea comprueba GHCR cada hora mientras esa sesión y Docker Desktop están disponibles. Consultar el Historial del Programador de tareas y `state/update.log` para diagnosticar fallos; vigilar ese registro y su crecimiento.
+
+No ejecutar `docker compose down -v`: elimina los volúmenes de datos. Mantener copias de seguridad externas y probar periódicamente su restauración. La carpeta de copias contiene también configuración privada y debe tener acceso restringido.
+
+## Publicar una versión
+
+Crear y subir una etiqueta `vX.Y.Z`, por ejemplo `v1.1.0`. [GitHub Actions](../../.github/workflows/publish-api-image.yml) ejecuta pruebas, construye `linux/amd64`, publica `ghcr.io/cleonsanchezgp-glitch/gestion-de-propiedades:v1.1.0` y mueve el canal `stable` a esa imagen. La instalación consulta `stable` y compara la identidad real de la imagen, por lo que repetir una comprobación no reinstala la misma versión. No volver a utilizar una etiqueta de versión ya publicada.
+
+Una actualización detiene API y Keycloak, copia las dos bases, comprueba el historial de migraciones, aplica migraciones explícitas y arranca la nueva API. Si falla, intenta restaurar ambas bases y la imagen anterior. Si la recuperación queda incompleta, `state/pending.json` bloquea nuevas actualizaciones; atenderla con `./Actualizar.ps1 -Action Recover`. Conservar el directorio de la copia hasta comprobar el portal. Se produce una interrupción breve del servicio.
+
+Las versiones mayores de PostgreSQL o Keycloak y los cambios del contrato frontend–API tienen una ruta de mantenimiento aparte. Las imágenes de esas dependencias están fijadas en Compose y no avanzan por el canal `stable`. La comprobación automática de vida no sustituye el ensayo integrado de autenticación y operaciones del portal antes de entregar la instalación a un cliente.

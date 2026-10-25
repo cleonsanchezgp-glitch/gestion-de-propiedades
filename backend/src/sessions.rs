@@ -44,7 +44,7 @@ impl Sessions {
     async fn tokens(&self,auth:&Auth,mut form:Vec<(&str,String)>)->Result<Tokens,ApiError>{
         if self.client_id.is_empty(){return Err(ApiError::unavailable());}
         form.push(("client_id",self.client_id.clone()));form.push(("client_secret",self.client_secret.clone()));
-        let response=auth.client.post(format!("{}/protocol/openid-connect/token",auth.issuer.trim_end_matches('/'))).form(&form).send().await.map_err(|_|ApiError::unavailable())?;
+        let response=auth.client.post(format!("{}/protocol/openid-connect/token",auth.backchannel_issuer.trim_end_matches('/'))).form(&form).send().await.map_err(|_|ApiError::unavailable())?;
         if response.status().is_client_error(){return Err(ApiError::unauthorized());}
         if !response.status().is_success(){return Err(ApiError::unavailable());}
         response.json().await.map_err(|_|ApiError::unavailable())
@@ -94,7 +94,7 @@ pub async fn logout(State(state):State<AppState>,headers:HeaderMap)->Result<Resp
     state.auth.sessions.check_origin(&headers)?;
     let session=if let Some(id)=session_id(&headers){state.auth.sessions.entries.lock().await.remove(&id)}else{None};
     if let Some(session)=session {
-        let _=state.auth.client.post(format!("{}/protocol/openid-connect/logout",state.auth.issuer.trim_end_matches('/')))
+        let _=state.auth.client.post(format!("{}/protocol/openid-connect/logout",state.auth.backchannel_issuer.trim_end_matches('/')))
             .form(&[("client_id",state.auth.sessions.client_id.as_str()),("client_secret",state.auth.sessions.client_secret.as_str()),("refresh_token",session.refresh.as_str())]).send().await;
     }
     Ok(response_cookie(StatusCode::OK,serde_json::json!({"authenticated":false}),state.auth.sessions.cookie("",true)))

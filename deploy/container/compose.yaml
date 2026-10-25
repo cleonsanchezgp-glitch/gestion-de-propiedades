@@ -1,0 +1,72 @@
+name: propiedades-cliente
+services:
+  postgres:
+    image: postgres:16.13-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: propiedades
+      POSTGRES_USER: propiedades
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}
+    volumes:
+      - propiedades-data:/var/lib/postgresql/data
+      - ${BACKUP_DIR:?Set BACKUP_DIR}:/backups
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U propiedades -d propiedades']
+      interval: 5s
+      timeout: 3s
+      retries: 30
+  keycloak-db:
+    image: postgres:16.13-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: ${KEYCLOAK_DB_PASSWORD:?Set KEYCLOAK_DB_PASSWORD}
+    volumes:
+      - keycloak-data:/var/lib/postgresql/data
+      - ${BACKUP_DIR:?Set BACKUP_DIR}:/backups
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U keycloak -d keycloak']
+      interval: 5s
+      timeout: 3s
+      retries: 30
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.7.4
+    restart: unless-stopped
+    command: [start]
+    depends_on:
+      keycloak-db:
+        condition: service_healthy
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://keycloak-db:5432/keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD:?Set KEYCLOAK_DB_PASSWORD}
+      KC_HOSTNAME: ${KEYCLOAK_ORIGIN:?Set KEYCLOAK_ORIGIN}
+      KC_HTTP_ENABLED: 'true'
+      KC_PROXY_HEADERS: xforwarded
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:?Set KEYCLOAK_ADMIN_PASSWORD}
+    ports:
+      - '127.0.0.1:${KEYCLOAK_PORT:-58082}:8080'
+  api:
+    image: ${API_IMAGE:?Set API_IMAGE}
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      keycloak:
+        condition: service_started
+    environment:
+      DATABASE_URL: postgres://propiedades:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}@postgres:5432/propiedades
+      PORTAL_ORIGIN: ${PORTAL_ORIGIN:?Set PORTAL_ORIGIN}
+      KEYCLOAK_ISSUER: ${KEYCLOAK_ORIGIN:?Set KEYCLOAK_ORIGIN}/realms/${KEYCLOAK_REALM:?Set KEYCLOAK_REALM}
+      KEYCLOAK_AUDIENCE: ${KEYCLOAK_AUDIENCE:?Set KEYCLOAK_AUDIENCE}
+      KEYCLOAK_ALLOWED_SUBJECT: ${KEYCLOAK_ALLOWED_SUBJECT:?Set KEYCLOAK_ALLOWED_SUBJECT}
+      KEYCLOAK_LOGIN_CLIENT_ID: ${KEYCLOAK_LOGIN_CLIENT_ID:?Set KEYCLOAK_LOGIN_CLIENT_ID}
+      KEYCLOAK_LOGIN_CLIENT_SECRET: ${KEYCLOAK_LOGIN_CLIENT_SECRET:?Set KEYCLOAK_LOGIN_CLIENT_SECRET}
+    ports:
+      - '127.0.0.1:${API_PORT:-58090}:8080'
+volumes:
+  propiedades-data:
+  keycloak-data:

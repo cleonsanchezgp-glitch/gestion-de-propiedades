@@ -55,8 +55,11 @@ impl Maintenance {
     pub fn unmanaged() -> Self { Self { root:None,legacy:false,instance_id:uuid::Uuid::new_v4().to_string(),owned:Arc::new(Mutex::new(HashSet::new())),grants:Arc::new(Mutex::new(GrantState::default())) } }
     pub fn initial_layout(root:PathBuf) -> Result<Self,ApiError> {
         if !root.is_absolute() {return Err(ApiError::maintenance());}
-        let settings:serde_json::Value=read_json(&root.join("config/settings.json"))?;
-        if settings["Format"]!=1 || !settings["Complete"].is_boolean() {return Err(ApiError::maintenance());}
+        // The API runs as LocalService and cannot read the installer-only
+        // settings.json (which also contains administrative secrets). api.json
+        // is its explicitly readable runtime configuration.
+        let settings:serde_json::Value=read_json(&root.join("config/api.json"))?;
+        if settings["OwnerSubject"].as_str().is_none_or(str::is_empty) || settings["ApiPort"].as_u64().is_none() {return Err(ApiError::maintenance());}
         let mut state=Self::unmanaged();state.root=Some(root);state.legacy=true;state.operation()?;Ok(state)
     }
     pub fn managed(root: PathBuf) -> Result<Self, ApiError> {
@@ -163,7 +166,7 @@ mod tests {
         fs::remove_file(p.join("maintenance/operation.json")).unwrap();assert!(!m.operational());
     }
     #[test] fn initial_layout_cannot_bypass_a_protocol_introduced_later() {
-        let p=std::env::temp_dir().join(format!("aelium-initial-{}",uuid::Uuid::new_v4()));fs::create_dir_all(p.join("config")).unwrap();fs::write(p.join("config/settings.json"),br#"{"Format":1,"Complete":true}"#).unwrap();
+        let p=std::env::temp_dir().join(format!("aelium-initial-{}",uuid::Uuid::new_v4()));fs::create_dir_all(p.join("config")).unwrap();fs::write(p.join("config/api.json"),br#"{"OwnerSubject":"owner","ApiPort":58090}"#).unwrap();
         let m=Maintenance::initial_layout(p.clone()).unwrap();assert!(m.operational());fs::create_dir(p.join("maintenance")).unwrap();assert!(!m.operational());assert!(Maintenance::initial_layout(p.clone()).is_err());
         write(&p,Phase::Recovering,false);assert!(!m.operational());assert!(m.can_serve());assert!(Maintenance::initial_layout(p.clone()).is_ok());
         write(&p,Phase::Recovered,true);assert!(m.operational());assert!(Maintenance::initial_layout(p).is_ok());

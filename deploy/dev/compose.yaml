@@ -1,0 +1,95 @@
+name: propiedades-dev
+services:
+  postgres:
+    image: postgres:16.13-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: propiedades_dev
+      POSTGRES_USER: propiedades_dev
+      POSTGRES_PASSWORD: ${DEV_DB_PASSWORD:?Run node deploy/dev/manage.mjs up}
+    ports:
+      - '127.0.0.1:${DEV_POSTGRES_PORT:-58202}:5432'
+    volumes:
+      - app-data:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U propiedades_dev -d propiedades_dev']
+      interval: 5s
+      timeout: 3s
+      retries: 30
+  keycloak-db:
+    image: postgres:16.13-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: ${DEV_KEYCLOAK_DB_PASSWORD:?Run node deploy/dev/manage.mjs up}
+    volumes:
+      - identity-data:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U keycloak -d keycloak']
+      interval: 5s
+      timeout: 3s
+      retries: 30
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.7.4
+    restart: unless-stopped
+    command: [start-dev, --import-realm]
+    depends_on:
+      keycloak-db:
+        condition: service_healthy
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://keycloak-db:5432/keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: ${DEV_KEYCLOAK_DB_PASSWORD:?Run node deploy/dev/manage.mjs up}
+      KC_HOSTNAME: http://127.0.0.1:${DEV_KEYCLOAK_PORT:-58200}
+      KC_BOOTSTRAP_ADMIN_USERNAME: dev-admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${DEV_ADMIN_PASSWORD:?Run node deploy/dev/manage.mjs up}
+    ports:
+      - '127.0.0.1:${DEV_KEYCLOAK_PORT:-58200}:8080'
+    volumes:
+      - ./.runtime/realm:/opt/keycloak/data/import:ro
+  api:
+    image: propiedades-api:dev
+    build:
+      context: ../../backend
+      args:
+        AELIUM_RELEASE_ID: dev
+        AELIUM_BUILD_ID: dev-local
+        AELIUM_API_CONTRACT: propiedades-v3
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      keycloak:
+        condition: service_started
+    environment:
+      AELIUM_DEV_MODE: '1'
+      DATABASE_URL: postgres://propiedades_dev:${DEV_DB_PASSWORD:?Run node deploy/dev/manage.mjs up}@postgres:5432/propiedades_dev
+      PORTAL_ORIGIN: http://127.0.0.1:${DEV_FRONTEND_PORT:-55173}
+      KEYCLOAK_ISSUER: http://127.0.0.1:${DEV_KEYCLOAK_PORT:-58200}/realms/propiedades-dev
+      KEYCLOAK_BACKCHANNEL_ISSUER: http://keycloak:8080/realms/propiedades-dev
+      KEYCLOAK_AUDIENCE: propiedades-api
+      KEYCLOAK_ALLOWED_SUBJECT: ${DEV_OWNER_SUBJECT:?Run node deploy/dev/manage.mjs up}
+      KEYCLOAK_LOGIN_CLIENT_ID: portal-login
+      KEYCLOAK_LOGIN_CLIENT_SECRET: ${DEV_LOGIN_SECRET:?Run node deploy/dev/manage.mjs up}
+    ports:
+      - '127.0.0.1:${DEV_API_PORT:-58201}:8080'
+  frontend:
+    image: propiedades-frontend:dev
+    build:
+      context: ../../frontend
+    restart: unless-stopped
+    depends_on:
+      api:
+        condition: service_started
+    ports:
+      - '127.0.0.1:${DEV_FRONTEND_PORT:-55173}:80'
+    healthcheck:
+      test: [CMD-SHELL, 'wget -q -O /dev/null http://127.0.0.1:80/']
+      interval: 5s
+      timeout: 3s
+      retries: 20
+volumes:
+  app-data:
+  identity-data:

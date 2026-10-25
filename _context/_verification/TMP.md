@@ -47,7 +47,7 @@ La revisión del 2026-10-09 incorporó las tres decisiones confirmadas de produc
 - FR-010 y FR-011: Ibercaja/n8n diferidos a fase futura.
 - Transferencias bancarias y decisiones financieras automáticas no solicitadas.
 - Certificación normativa y compromisos de rendimiento, disponibilidad o accesibilidad aún no definidos.
-- Cambios de dependencias y distribución automática; pruebas sobre datos reales o el servidor del cliente; creación de infraestructura comercial y publicación remota no autorizadas. Se ensayan esos flujos en un entorno aislado representativo, sin convertir el plan en autorización de despliegue.
+- Cambios de versión de dependencias, pruebas sobre datos reales o el servidor del cliente, creación de infraestructura comercial y publicación remota no autorizadas. La distribución automática de la API para la nueva variante Docker se cubre en TEST-039 a TEST-041, en un entorno aislado antes de entregarla al cliente.
 
 ## 4. Test Strategy
 
@@ -163,6 +163,11 @@ Cada descripción incluye la acción y el resultado verificable. Evidence «—�
 | NFR-009 | TEST-036: recorrer fallos antes/después de migración y durante recuperación, incluida copia dañada, fallo de restauración e intercambio parcial de bases; no permitir escrituras con conjunto incoherente ni declarar éxito; recuperar conjunto previo comprobado o informar RecoveryRequired; tras Committed crear dato sintético nuevo y solicitar reversión automática antigua: no debe restaurar la copia ni descartar ese dato; AC-109, ADR-014/015; WP-007 a WP-009 | [backup — parcial](../../tests/artifacts/updates/backup-2026-10-11T16-17-28-716Z-d8b36d54/report.json); [flow — parcial](../../tests/artifacts/updates/flow-2026-10-11T16-17-18-593Z-e7738363/report.json) | Not Run |
 | NFR-010 | TEST-037: probar las parejas declaradas frontend anterior/backend anterior, anterior/nuevo y nuevo/nuevo, más la pareja o recuperación de frontend necesaria para volver al backend anterior; una combinación no admitida/desconocida se rechaza antes del cambio; la admitida permite consulta/escritura de fixture desde frontend; incluir pestaña antigua y capacidades nuevas deshabilitadas en backend recuperado; AC-110, ADR-013/016; WP-006, WP-009 | [package — parcial](../../tests/artifacts/updates/package-20261011T160436528Z-3e3cab02/report.json); [browser — parcial](../../tests/artifacts/updates/browser-2026-10-11T16-04-06-825Z-4e6fdaf6/report.json); [flow — parcial](../../tests/artifacts/updates/flow-2026-10-11T16-17-18-593Z-e7738363/report.json) | Not Run |
 | FR-015 | TEST-038: con secretos sintéticos identificables inspeccionar informes, salida administrativa, logs y assets públicos de una ejecución correcta, otra recuperada y otra pendiente; verificar versiones, fase, causa y referencia de copia sin contraseñas/cookies/tokens/datos de cliente; en frontend inducir 503 de mantenimiento con formulario sin guardar: entrada conservada y sin reintento automático; comprobar guía y diferencia entre actualización y recuperación; AC-019, AC-020, ADR-016 y contrato de API; WP-009 | [browser — parcial](../../tests/artifacts/updates/browser-2026-10-11T16-04-06-825Z-4e6fdaf6/report.json); [flow — parcial](../../tests/artifacts/updates/flow-2026-10-11T16-17-18-593Z-e7738363/report.json) | Not Run |
+
+| FR-017 | TEST-039: publicar una etiqueta de prueba vX.Y.Z desde un repositorio aislado; comprobar prueba previa, metadatos de versión, imagen GHCR inmutable y avance de stable solo tras build satisfactorio; AC-024 | — | Not Run |
+| FR-018 | TEST-040: instalar Compose en Windows/Docker Desktop con datos e identidad sintéticos, reiniciar Docker y verificar persistencia de ambas bases, API y Keycloak; AC-025 | — | Not Run |
+| FR-019 | TEST-041: ejecutar la tarea con imagen repetida y nueva compatible; comprobar actualización idempotente y versión activa sin intervención del cliente; AC-026 | — | Not Run |
+| FR-020 | TEST-042: inducir migración fallida e interrupción tras copia; comprobar restauración de ambas bases e imagen anterior y bloqueo ante estado pendiente; AC-027 y AC-028 | — | Not Run |
 
 ### Variantes de interrupción — TEST-032 y TEST-036
 

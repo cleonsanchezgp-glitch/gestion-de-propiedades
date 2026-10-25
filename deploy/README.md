@@ -1,6 +1,10 @@
 # Frontend en Cloudflare, servidor local independiente
 
-**Para el ordenador del cliente con Windows 10 Home:** usar el
+Para desarrollar con API, Keycloak y PostgreSQL en Docker Desktop, usar el [entorno de desarrollo](dev/README.md).
+
+**Para una instalación Docker nueva en Windows con actualización automática de la API:** usar la [guía de contenedores](container/README.md). Comprobar antes los requisitos de Docker Desktop del equipo de destino.
+
+**Para el ordenador del cliente con Windows 10 Home y servicios nativos:** usar el
 [instalador nativo](windows/README.md). El resto de esta guía describe la variante
 Docker. En la variante nativa Keycloak queda privado y solo se publica el dominio
 API mediante el túnel; no hace falta un dominio público para Keycloak.

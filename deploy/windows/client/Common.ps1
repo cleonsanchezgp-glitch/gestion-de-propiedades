@@ -37,7 +37,7 @@ function New-Realm($Settings) {
     return @{
         realm='propiedades';enabled=$true;sslRequired='none';bruteForceProtected=$true;registrationAllowed=$false
         users=@(@{id=$Settings.OwnerSubject;username=$Settings.Username;enabled=$true;firstName='Propietario';lastName='Portal';email=($Settings.OwnerSubject+'@example.invalid');emailVerified=$true;requiredActions=@();credentials=@(@{type='password';value=$Settings.OwnerPassword;temporary=$false})})
-        clients=@(@{clientId='portal-login';enabled=$true;publicClient=$false;secret=$Settings.LoginSecret;standardFlowEnabled=$false;directAccessGrantsEnabled=$true;serviceAccountsEnabled=$false
+        clients=@(@{clientId='portal-login';enabled=$true;publicClient=$false;clientAuthenticatorType='client-secret';secret=$Settings.LoginSecret;standardFlowEnabled=$false;directAccessGrantsEnabled=$true;serviceAccountsEnabled=$false
             attributes=@{'access.token.lifespan'='1800';'client.session.idle.timeout'='1800';'client.session.max.lifespan'='1800'}
             protocolMappers=@(@{name='backend-audience';protocol='openid-connect';protocolMapper='oidc-audience-mapper';config=@{'included.custom.audience'='propiedades-api';'access.token.claim'='true';'id.token.claim'='false'}})})
     }

@@ -7,8 +7,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "test:browser": "playwright test",
-    "browser:install": "playwright install chromium",
-    "test:update": "node ../tests/scripts/check-update-frontend.mjs"
+    "browser:install": "playwright install chromium"
   },
   "dependencies": {
     "vite": "8.3.4"

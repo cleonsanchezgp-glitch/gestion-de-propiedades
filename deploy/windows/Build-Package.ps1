@@ -45,7 +45,6 @@ foreach ($dependency in $dependencies) {
 }
 Copy-Item -Path (Join-Path $PSScriptRoot 'client/*') -Destination $output -Recurse
 Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'README.md') -Destination (Join-Path $output 'LEEME.md')
-Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'VALIDACION.md') -Destination (Join-Path $output 'VALIDACION.md')
 New-Item -ItemType Directory -Path (Join-Path $output 'licenses') | Out-Null
 Invoke-WebRequest -UseBasicParsing -Uri https://raw.githubusercontent.com/winsw/winsw/v2.12.0/LICENSE.txt -OutFile (Join-Path $output 'licenses/WinSW-LICENSE.txt')
 Invoke-WebRequest -UseBasicParsing -Uri https://raw.githubusercontent.com/cloudflare/cloudflared/2026.10.0/LICENSE -OutFile (Join-Path $output 'licenses/cloudflared-LICENSE.txt')

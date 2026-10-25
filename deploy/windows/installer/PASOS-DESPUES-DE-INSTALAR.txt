@@ -1,0 +1,26 @@
+PASOS PARA CONECTAR PROMALZA AL PORTAL
+
+Continúe solo si el asistente indica "Backend instalado y verificado".
+
+1. En Cloudflare, dirija el dominio HTTPS de la API a
+   http://127.0.0.1:58090 mediante el túnel de este servidor.
+   No publique PostgreSQL ni Keycloak.
+
+2. Abra PowerShell como administrador y ejecute:
+
+   powershell.exe -NoProfile -ExecutionPolicy Bypass -File "C:\ProgramData\Aelium\Propiedades\scripts\Configurar-Tunel.ps1"
+
+   Introduzca el token del túnel cuando se solicite. El script creará
+   e iniciará el servicio AeliumTunnel.
+
+3. Proteja el dominio API con Cloudflare Access Service Auth. Compruebe
+   en el Worker del frontend que API_ORIGIN es el origen HTTPS de esa API
+   y que CF_ACCESS_CLIENT_ID y CF_ACCESS_CLIENT_SECRET corresponden al
+   token Service Auth. Este token es diferente del token del túnel.
+
+4. Compruebe AeliumPostgres, AeliumKeycloak, AeliumAPI y AeliumTunnel.
+   Abra el portal, inicie sesión, guarde un cambio de prueba y cierre
+   sesión. Reinicie Windows y repita la comprobación.
+
+La guía completa LEEME-INSTALACION-NUEVA.md queda junto a este instalador.
+No comparta los tokens ni los archivos de configuración.

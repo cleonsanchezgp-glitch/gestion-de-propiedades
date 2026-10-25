@@ -8,8 +8,10 @@ use crate::{AppState, error::ApiError};
 #[derive(Clone)]
 pub struct Auth {
     pub issuer: String,
+    pub backchannel_issuer: String,
     pub audience: String,
     pub allowed_subject: String,
+    pub realm_users: bool,
     pub jwks_url: String,
     pub client: reqwest::Client,
     pub sessions:crate::sessions::Sessions,
@@ -27,7 +29,7 @@ pub struct Principal {
 impl Auth {
     #[cfg(test)]
     pub(crate) fn test_auth()->Self {
-        Self {issuer:"http://127.0.0.1:1/realm".into(),audience:"api".into(),allowed_subject:"owner".into(),jwks_url:String::new(),client:reqwest::Client::new(),sessions:crate::sessions::Sessions::default(),cache:Arc::new(Mutex::new(None))}
+        Self {issuer:"http://127.0.0.1:1/realm".into(),backchannel_issuer:"http://127.0.0.1:1/realm".into(),audience:"api".into(),allowed_subject:"owner".into(),realm_users:false,jwks_url:String::new(),client:reqwest::Client::new(),sessions:crate::sessions::Sessions::default(),cache:Arc::new(Mutex::new(None))}
     }
     pub fn from_env() -> Result<Self,Box<dyn std::error::Error>> {
         fn required(name: &str) -> Result<String,Box<dyn std::error::Error>> {
@@ -35,16 +37,36 @@ impl Auth {
             if value.trim().is_empty() { return Err(format!("Empty configuration: {name}").into()); }
             Ok(value)
         }
+        let realm_users=match std::env::var("KEYCLOAK_ACCESS_MODE").as_deref() {
+            Ok("realm-users") => true,
+            Ok("owner") | Err(std::env::VarError::NotPresent) => false,
+            _ => return Err("Invalid KEYCLOAK_ACCESS_MODE".into()),
+        };
+        let allowed_subject=if realm_users {String::new()} else {required("KEYCLOAK_ALLOWED_SUBJECT")?};
         let issuer=required("KEYCLOAK_ISSUER")?;
         let parsed=reqwest::Url::parse(&issuer)?;
         let local=matches!(parsed.host_str(),Some("127.0.0.1"|"localhost"|"[::1]"));
         if parsed.scheme()!="https" && !(local && parsed.scheme()=="http") {return Err("Issuer requires HTTPS except for loopback tests".into());}
+        let backchannel_issuer=match std::env::var("KEYCLOAK_BACKCHANNEL_ISSUER") {
+            Ok(value) => {
+                let internal=reqwest::Url::parse(&value)?;
+                if std::env::var("AELIUM_DEV_MODE").as_deref()!=Ok("1") || !local || parsed.scheme()!="http" ||
+                    internal.scheme()!="http" || internal.host_str()!=Some("keycloak") || internal.path()!=parsed.path() ||
+                    internal.query().is_some() || internal.fragment().is_some() || !internal.username().is_empty() || internal.password().is_some() {
+                    return Err("Invalid development Keycloak backchannel".into());
+                }
+                value
+            }
+            Err(std::env::VarError::NotPresent) => issuer.clone(),
+            Err(error) => return Err(error.into()),
+        };
         let client=reqwest::Client::builder().timeout(Duration::from_secs(5)).redirect(reqwest::redirect::Policy::none()).build()?;
-        Ok(Self {jwks_url:format!("{}/protocol/openid-connect/certs",issuer.trim_end_matches('/')),issuer,
-            audience:required("KEYCLOAK_AUDIENCE")?,allowed_subject:required("KEYCLOAK_ALLOWED_SUBJECT")?,client,sessions:crate::sessions::Sessions::from_env()?,cache:Arc::new(Mutex::new(None))})
+        Ok(Self {jwks_url:format!("{}/protocol/openid-connect/certs",backchannel_issuer.trim_end_matches('/')),issuer,backchannel_issuer,
+            audience:required("KEYCLOAK_AUDIENCE")?,allowed_subject,realm_users,client,sessions:crate::sessions::Sessions::from_env()?,cache:Arc::new(Mutex::new(None))})
     }
     pub fn authorize(&self, principal: &Principal) -> Result<(), ApiError> {
-        if self.allowed_subject.trim().is_empty() || principal.iss != self.issuer || principal.sub != self.allowed_subject {
+        if principal.sub.trim().is_empty() || principal.iss != self.issuer ||
+            (!self.realm_users && (self.allowed_subject.trim().is_empty() || principal.sub != self.allowed_subject)) {
             return Err(ApiError::forbidden());
         }
         Ok(())
@@ -93,8 +115,17 @@ pub async fn authenticate(State(state): State<AppState>, mut request: Request, n
 mod tests {
     use super::*;
     #[test]
+    fn realm_users_accepts_multiple_users_but_denies_master_and_empty_subject() {
+        let mut auth=Auth::test_auth();auth.realm_users=true;auth.allowed_subject.clear();
+        let mut principal=Principal{sub:"promalza".into(),iss:auth.issuer.clone(),exp:0,realm_access:None};
+        assert!(auth.authorize(&principal).is_ok());
+        principal.sub="another-client-user".into();assert!(auth.authorize(&principal).is_ok());
+        principal.iss="http://127.0.0.1:1/realms/master".into();assert!(auth.authorize(&principal).is_err());
+        principal.iss=auth.issuer.clone();principal.sub=" ".into();assert!(auth.authorize(&principal).is_err());
+    }
+    #[test]
     fn exclusive_identity_denies_other_subjects_issuers_and_missing_configuration() {
-        let mut auth=Auth {issuer:"https://identity.example/realm".into(),audience:"api".into(),allowed_subject:"owner".into(),jwks_url:String::new(),client:reqwest::Client::new(),sessions:crate::sessions::Sessions::default(),cache:Arc::new(Mutex::new(None))};
+        let mut auth=Auth {issuer:"https://identity.example/realm".into(),backchannel_issuer:"https://identity.example/realm".into(),audience:"api".into(),allowed_subject:"owner".into(),realm_users:false,jwks_url:String::new(),client:reqwest::Client::new(),sessions:crate::sessions::Sessions::default(),cache:Arc::new(Mutex::new(None))};
         let mut principal=Principal {sub:"owner".into(),iss:auth.issuer.clone(),exp:0,realm_access:None};
         assert!(auth.authorize(&principal).is_ok());
         principal.sub="other".into();

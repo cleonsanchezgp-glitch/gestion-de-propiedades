@@ -19,20 +19,13 @@
     "local:prepare": "node tests/scripts/provision-local-user.mjs",
     "local:login-config": "node tests/scripts/configure-portal-login.mjs",
     "frontend:dev": "npm --prefix frontend run dev",
+    "docker:dev:up": "node deploy/dev/manage.mjs up",
+    "docker:dev:down": "node deploy/dev/manage.mjs down",
+    "docker:dev:status": "node deploy/dev/manage.mjs status",
     "frontend:build": "npm --prefix frontend run build",
     "test:browser": "npm --prefix frontend run test:browser",
     "test:windows-installer": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File tests/scripts/check-windows-installer.ps1",
     "backend:package:windows": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File deploy/windows/Build-Package.ps1",
-    "backend:package:update": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File deploy/windows/Build-UpdatePackage.ps1",
-    "test:update-package": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File tests/scripts/check-update-package.ps1",
-    "test:update-runtime": "cargo build --manifest-path backend/Cargo.toml --locked --offline && node tests/scripts/check-update-runtime.mjs",
-    "test:update-control": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File tests/scripts/check-update-control.ps1",
-    "test:update-backup": "node tests/scripts/check-update-backup.mjs",
-    "test:update-flow": "node tests/scripts/check-application-update.mjs",
-    "test:update-frontend": "npm --prefix frontend run test:update",
-    "test:update-local-mode": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File tests/scripts/check-local-rehearsal.ps1",
-    "test:update-dependency-paths": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File tests/scripts/check-dependency-paths.ps1",
-    "backend:package:desktop-updater": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File deploy/windows/Build-DesktopUpdater.ps1",
-    "test:desktop-updater": "powershell.exe -NoProfile -STA -ExecutionPolicy Bypass -File tests/scripts/check-desktop-updater.ps1"
+    "backend:package:installer": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File deploy/windows/Build-FreshBackendInstaller.ps1"
   }
 }

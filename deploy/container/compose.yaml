@@ -1,7 +1,7 @@
 name: propiedades-cliente
 services:
   postgres:
-    image: postgres:16.13-alpine
+    image: ${POSTGRES_IMAGE:?Set POSTGRES_IMAGE}
     restart: unless-stopped
     environment:
       POSTGRES_DB: propiedades
@@ -16,7 +16,7 @@ services:
       timeout: 3s
       retries: 30
   keycloak-db:
-    image: postgres:16.13-alpine
+    image: ${POSTGRES_IMAGE:?Set POSTGRES_IMAGE}
     restart: unless-stopped
     environment:
       POSTGRES_DB: keycloak
@@ -31,7 +31,7 @@ services:
       timeout: 3s
       retries: 30
   keycloak:
-    image: quay.io/keycloak/keycloak:26.7.4
+    image: ${KEYCLOAK_IMAGE:?Set KEYCLOAK_IMAGE}
     restart: unless-stopped
     command: [start]
     depends_on:

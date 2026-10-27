@@ -105,6 +105,10 @@ if($Action -eq 'Install' -and (Test-Path -LiteralPath $currentFile)){throw 'La i
 if($Action -eq 'Update' -and -not (Test-Path -LiteralPath $currentFile)){throw 'Ejecute primero Actualizar.ps1 -Action Install.'}
 try{
     Run-Docker @('info','--format','{{.ServerVersion}}')
+    if($Action -eq 'Install'){
+        Compose @('config','--quiet')
+        Compose @('pull','--policy','always','postgres','keycloak-db','keycloak')
+    }
     Run-Docker @('pull',$values.API_IMAGE)
     $candidate=Image-Id $values.API_IMAGE
     $target=Image-Info $candidate
